@@ -5,7 +5,7 @@ let
   csv        = require('csvtojson'),
   path       = __dirname + '/../data/',
   dao        = require('../dao'),
-  paging     = 5000,
+  paging     = 1000,
   headers    = [ 'name', 'url', 'company', 'role', 'time', 'local' ],
   personDao  = require('../dao').personDao,
   createOptions = { ignoreDuplicates: true},
@@ -15,8 +15,6 @@ person.prototype.loadFiles = _loadFiles;
 person.prototype.list = _list;
 
 module.exports = new person();
-
-
 
 function person(){
   this.name = 'koji';
@@ -42,11 +40,11 @@ function _list(page){
   return new Promise( function(resolve, reject){
     personDao.findAll({offset, limit})
     .then(function(datas){
+      list.hasNext = (datas.length > paging);
       datas = datas.map( (r) => ( r.get({plain:true}) ) )
       if (datas.length > paging) datas.pop();
       list.persons = datas;
       list.hasPrev = (offset != 0);
-      list.hasNext = (datas.length > limit);
       resolve(list);
     })
     .catch(function(e){
@@ -56,11 +54,11 @@ function _list(page){
 }
 
 function _dump(){
-  personDao.findAll()
-  .then(function(){
+  // personDao.findAll()
+  // .then(function(){
     
-  })
-  .catch(console);
+  // })
+  // .catch(console);
 }
 
 function readDirFiles(err, files){

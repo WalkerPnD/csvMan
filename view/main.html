@@ -11,7 +11,7 @@
   <div id="personList">
     <div class="header">
       <p>CSV Manipulator</p>
-      <button onclick="loadFiles()">Atualizar as Informações</button> total: {{count}} pessoas
+      <button onclick="loadFiles()">Atualizar</button> total: {{count}} pessoas
       <!--<button onclick="loadList(0)">Buscar</button>-->
     </div>
     <div class="container">
@@ -37,8 +37,8 @@
       </table>
     </div>
     <footer>
-      <button>Pref</button>
-      <button>Next</button>
+      <button @click="prev()" v-bind:disabled="!hasPrev">Pref</button>
+      <button @click="next()" v-bind:disabled="!hasNext">Next</button>
     </footer>
   </div>
   <script src="../lib/vue.js"></script>
@@ -56,7 +56,9 @@
           count: 0,
           qCompany: '',
           qLocation: '',
-          persons: []
+          persons: [],
+          hasNext: false,
+          hasPrev: false
         },
         methods: {
           openInBrowser: function (url) {
@@ -68,7 +70,7 @@
           },
           prev: function(){
             if(this.hasPrev)
-              loadList(++current);
+              loadList(--current);
           }
         },
         computed: {
