@@ -1,0 +1,19 @@
+{
+  "name": "csvManipulator",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "sequelize": "^3.30.4",
+    "sqlite3": "^3.1.8"
+  },
+  "devDependencies": {
+    "electron-rebuild": "^1.5.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Koji Carvalho(Walker)",
+  "license": "ISC"
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>csvManipulator</title>
+</head>
+<body>
+  <p>Hello World</p>
+  <input type="file" name="file" webkitdirectory> <br>
+  <button>Marge</button>
+  <hr>
+  <p id="quote">just do it!</p>
+  <script>
+    const
+      electron = require('electron'),
+      ipcRenderer = electron.ipcRenderer,
+      $quote = document.getElementById('quote'),
+      quotes = [
+        'Just do It!',
+        'Done is better than perfetct',
+        'Stay hungry, stay foolish',
+        'Ask, do not tell',
+        'Focus on the user',
+        'Keep trying',
+        'Nothing is impossible',
+        'That which is measured, improves'
+      ];
+
+    window.addEventListener('click', function(){
+      $quote.innerText = quotes[Math.floor(Math.random() * quotes.length)];
+    });
+    ipcRenderer.on('set_bgcolor', function(event, color){
+      document.body.style.backgroundColor = color;
+    });
+  </script>
+</body>
+</html>
