@@ -6,15 +6,18 @@
 </head>
 <body>
   <p>Hello World</p>
-  <input type="file" name="file" webkitdirectory> <br>
+  <input type="file" name="file" id="files" webkitdirectory> <br>
   <button>Marge</button>
   <hr>
   <p id="quote">just do it!</p>
+  <button onclick="loadFiles()">Adicionar as Informações</button>
   <script>
     const
       electron = require('electron'),
+      remote   = electron.remote,
       ipcRenderer = electron.ipcRenderer,
       $quote = document.getElementById('quote'),
+      // $files = document.getElementById('files'),
       quotes = [
         'Just do It!',
         'Done is better than perfetct',
@@ -26,12 +29,21 @@
         'That which is measured, improves'
       ];
 
+    let 
+     path = ''; // not using
+
     window.addEventListener('click', function(){
       $quote.innerText = quotes[Math.floor(Math.random() * quotes.length)];
     });
     ipcRenderer.on('set_bgcolor', function(event, color){
       document.body.style.backgroundColor = color;
     });
+    ipcRenderer.on('readCsvFiles', function(event, color){
+      document.body.style.backgroundColor = color;
+    });
+    function loadFiles(){
+      ipcRenderer.send('readCsvFiles', path);
+    }
   </script>
 </body>
 </html>

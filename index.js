@@ -10,7 +10,6 @@ const
 let
   mainMenu = model.mainMenu(app); // Global menu
 
-
 _init();
 /* /////////
   Window settings
