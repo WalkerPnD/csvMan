@@ -4,7 +4,8 @@ let
   fs         = require('fs-extra'),
   csv        = require('csvtojson'),
   path       = __dirname + '/../data/',
-  paging     = 1000,
+  dao        = require('../dao'),
+  paging     = 5000,
   headers    = [ 'name', 'url', 'company', 'role', 'time', 'local' ],
   personDao  = require('../dao').personDao,
   createOptions = { ignoreDuplicates: true},
@@ -22,6 +23,7 @@ function person(){
 }
 
 function _loadFiles(){
+  dao.sequelize.sync({force: true});
   fs.readdir(path, readDirFiles);
 }
 

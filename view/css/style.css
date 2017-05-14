@@ -1,0 +1,31 @@
+body{
+  position: relative;
+  margin:0;
+}
+.header, .listTitle, footer{
+  position: fixed;
+  height: 80px;
+  background-color: white;
+  width: 100%;
+}
+.container{
+  padding: 100px 0 80px;
+}
+.listTitle{
+  top: 80px;
+  height: 20px;
+}
+td,th{
+  table-layout: fixed;
+}
+.tName{
+  width: 80px;
+}
+.tLink{
+  width: 20px;
+}
+
+footer{
+  position: fixed;
+  bottom: 0;
+}

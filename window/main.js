@@ -53,7 +53,7 @@ function useMenu(m){
 function create(){
   if(menu) Menu.setApplicationMenu(menu);
 
-  w = new BrowserWindow({width: 600, height: 400});
+  w = new BrowserWindow({width: 800, height: 600});
   w.loadURL(view('main'));
   w.webContents.openDevTools();
   w.on('closed', function() {
