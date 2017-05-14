@@ -37,5 +37,5 @@ app.on('ready', function() {
 ///////// */
 
 function _init(){
-  dao.sequelize.sync({force: true});
+  // dao.sequelize.sync({force: true});
 }

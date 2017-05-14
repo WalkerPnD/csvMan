@@ -6,43 +6,75 @@
 </head>
 <body>
   <p>Hello World</p>
-  <input type="file" name="file" id="files" webkitdirectory> <br>
-  <button>Marge</button>
-  <hr>
-  <p id="quote">just do it!</p>
-  <button onclick="loadFiles()">Adicionar as Informações</button>
+  <button onclick="loadFiles()">Adicionar as Informações</button><br>
+  <button onclick="loadList()">Ver as Informações</button><br>
+  <table id="personList">
+    <tr>
+      <th>Perfil</th>
+      <th>Nome</th>
+      <th>Empresa <input type="text" v-model="qCompany" placeholder="filtrar"></th>
+      <th>Tempo</th>
+      <th>Local <input type="text" v-model="qLocation" placeholder="filtrar"></th>
+    </tr>
+    <tr v-for="p in personFilter">
+      <!--<td><a href onclick="openInBrowser()" data-target="p.url">Ln</a></td>-->
+      <td><a href @click="openInBrowser(p.url)">Ln</a></td>
+      <td>{{p.name}}</td>
+      <td>{{p.company}}</td>
+      <td>{{p.time}}</td>
+      <td>{{p.local}}</td>
+    </tr>
+  </table>
+  <script src="../lib/vue.js"></script>
   <script>
     const
       electron = require('electron'),
-      remote   = electron.remote,
-      ipcRenderer = electron.ipcRenderer,
-      $quote = document.getElementById('quote'),
-      // $files = document.getElementById('files'),
-      quotes = [
-        'Just do It!',
-        'Done is better than perfetct',
-        'Stay hungry, stay foolish',
-        'Ask, do not tell',
-        'Focus on the user',
-        'Keep trying',
-        'Nothing is impossible',
-        'That which is measured, improves'
-      ];
+      openEx   = electron.shell.openExternal,
+      ipcRenderer = electron.ipcRenderer;
 
-    let 
+    let
+     personList = new Vue({
+       el:'#personList',
+       data: {
+         qCompany : '',
+         qLocation: '',
+         persons  : []
+       },
+       methods: {
+         openInBrowser: function(url){
+           openEx(url);
+         }
+       },
+       computed: {
+         personFilter: function(){
+           let self = this;
+           return self.persons.filter(function(p){
+            let companyQuery = new RegExp(self.qCompany, 'i');
+            let locationQuery = new RegExp(self.qLocation, 'i');
+            return (
+              companyQuery.test(p.company)
+              && locationQuery.test(p.local)
+            );
+           })
+         }
+       }
+     })
      path = ''; // not using
 
-    window.addEventListener('click', function(){
-      $quote.innerText = quotes[Math.floor(Math.random() * quotes.length)];
-    });
     ipcRenderer.on('set_bgcolor', function(event, color){
       document.body.style.backgroundColor = color;
     });
-    ipcRenderer.on('readCsvFiles', function(event, color){
-      document.body.style.backgroundColor = color;
+    ipcRenderer.on('set_personList', function(event, list){
+      personList.persons = list.persons;
     });
+    function loadList(){
+      ipcRenderer.send('get_personList', 0);
+    }
     function loadFiles(){
       ipcRenderer.send('readCsvFiles', path);
+    }
+    function openInBrowser(s){
+      console.log(s);
     }
   </script>
 </body>
