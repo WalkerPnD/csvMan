@@ -1,95 +1,116 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta charset="UTF-8">
   <title>csvManipulator</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
-<div id="personList">
-  <div class="header">
-    <p>CSV Manipulator</p>
-    <button onclick="loadFiles()">Atualizar as Informações</button>
-    <button onclick="loadList()">Buscar</button>
-  </div>
-  <div class="container">
-    <div class="listTitle">
-      filter: Empresa <input type="text" v-model="qCompany" placeholder="filtrar"> / 
-      Local <input type="text" v-model="qLocation" placeholder="filtrar">
+  <div id="personList">
+    <div class="header">
+      <p>CSV Manipulator</p>
+      <button onclick="loadFiles()">Atualizar as Informações</button> total: {{count}} pessoas
+      <!--<button onclick="loadList(0)">Buscar</button>-->
     </div>
-    <table>
-      <tr>
-        <th>Perfil</th>
-        <th>Nome</th>
-        <th>Empresa</th>
-        <th>Tempo</th>
-        <th>Local</th>
-      </tr>
-      <tr v-for="p in personFilter">
-        <td class="tLink"><a href @click="openInBrowser(p.url)">Ln</a></td>
-        <td class="tName">{{p.name}}</td>
-        <td>{{p.company}}</td>
-        <td>{{p.time}}</td>
-        <td>{{p.local}}</td>
-      </tr>
-     </table>
+    <div class="container">
+      <div class="listTitle">
+        filter: Empresa <input type="text" v-model="qCompany" placeholder="filtrar"> / Local <input type="text" v-model="qLocation"
+          placeholder="filtrar">
+      </div>
+      <table>
+        <tr>
+          <th>Perfil</th>
+          <th>Nome</th>
+          <th>Empresa</th>
+          <th>Tempo</th>
+          <th>Local</th>
+        </tr>
+        <tr v-for="p in personFilter">
+          <td class="tLink"><a href @click="openInBrowser(p.url)">Ln</a></td>
+          <td class="tName">{{p.name}}</td>
+          <td>{{p.company}}</td>
+          <td>{{p.time}}</td>
+          <td>{{p.local}}</td>
+        </tr>
+      </table>
+    </div>
+    <footer>
+      <button>Pref</button>
+      <button>Next</button>
+    </footer>
   </div>
-  <footer>
-    <button>Pref</button>
-    <button>Next</button>
-  </footer>
-</div>
   <script src="../lib/vue.js"></script>
   <script>
     const
       electron = require('electron'),
-      openEx   = electron.shell.openExternal,
+      openEx = electron.shell.openExternal,
       ipcRenderer = electron.ipcRenderer;
 
     let
-     personList = new Vue({
-       el:'#personList',
-       data: {
-         qCompany : '',
-         qLocation: '',
-         persons  : []
-       },
-       methods: {
-         openInBrowser: function(url){
-           openEx(url);
-         }
-       },
-       computed: {
-         personFilter: function(){
-           let self = this;
-           return self.persons.filter(function(p){
-            let companyQuery = new RegExp(self.qCompany, 'i');
-            let locationQuery = new RegExp(self.qLocation, 'i');
-            return (
-              companyQuery.test(p.company)
-              && locationQuery.test(p.local)
-            );
-           })
-         }
-       }
-     })
-     path = ''; // not using
+      current = 0,
+      personList = new Vue({
+        el: '#personList',
+        data: {
+          count: 0,
+          qCompany: '',
+          qLocation: '',
+          persons: []
+        },
+        methods: {
+          openInBrowser: function (url) {
+            openEx(url);
+          },
+          next: function() {
+            if(this.hasNext)
+              loadList(++current);
+          },
+          prev: function(){
+            if(this.hasPrev)
+              loadList(++current);
+          }
+        },
+        computed: {
+          personFilter: function () {
+            let self = this;
+            return self.persons.filter(function (p) {
+              let companyQuery = new RegExp(self.qCompany, 'i');
+              let locationQuery = new RegExp(self.qLocation, 'i');
+              return (
+                companyQuery.test(p.company) &&
+                locationQuery.test(p.local)
+              );
+            })
+          }
+        }
+      })
+    path = ''; // not using
 
-    ipcRenderer.on('set_bgcolor', function(event, color){
+    loadList(0);
+
+    ipcRenderer.on('set_bgcolor', function (event, color) {
       document.body.style.backgroundColor = color;
     });
-    ipcRenderer.on('set_personList', function(event, list){
+    ipcRenderer.on('set_personList', function (event, list) {
       personList.persons = list.persons;
+      personList.hasNext = list.hasNext;
+      personList.hasPrev = list.hasPrev;
+      personList.count   = list.persons.length;
     });
-    function loadList(){
-      ipcRenderer.send('get_personList', 0);
+
+    function loadList(offset) {
+      ipcRenderer.send('get_personList', offset);
     }
-    function loadFiles(){
+
+    function loadFiles() {
       ipcRenderer.send('readCsvFiles', path);
     }
-    function openInBrowser(s){
+
+    function openInBrowser(s) {
       console.log(s);
     }
   </script>
 </body>
+
 </html>

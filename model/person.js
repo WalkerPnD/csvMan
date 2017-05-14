@@ -27,8 +27,9 @@ function _loadFiles(){
   fs.readdir(path, readDirFiles);
 }
 
-function _list(offset){
-  offset = offset || 0;
+function _list(page){
+  let offset = page || 0;
+  offset = offset * paging;
   let
     limit = paging + 1,
     list = {
@@ -54,7 +55,13 @@ function _list(offset){
   });
 }
 
-
+function _dump(){
+  personDao.findAll()
+  .then(function(){
+    
+  })
+  .catch(console);
+}
 
 function readDirFiles(err, files){
   if (err) throw err;
@@ -80,4 +87,3 @@ function saveCsv(file){
 function dataFilter(data, idex, array){
   return (data.name != 'LinkedIn Member');
 }
-

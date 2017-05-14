@@ -1,6 +1,7 @@
 body{
   position: relative;
   margin:0;
+  height: 100vh;
 }
 .header, .listTitle, footer{
   position: fixed;
@@ -10,6 +11,9 @@ body{
 }
 .container{
   padding: 100px 0 80px;
+}
+.el-table{
+  height: 75vh;
 }
 .listTitle{
   top: 80px;
