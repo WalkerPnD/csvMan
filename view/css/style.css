@@ -35,15 +35,16 @@ footer{
 }
 
 button {
-border-radius: 2em;
-display: inline-block;
-color: #42b983;
-background-color: white;
-font-size: 0.8em;
-width: 125px;
-padding: 4px 0;
-text-align: center;
-margin-bottom: 20px;
+  border-radius: 1em;
+  display: inline-block;
+  color: #42b983;
+  background-color: white;
+  font-size: 0.8em;
+  width: 125px;
+  padding: 4px 0;
+  text-align: center;
+  margin-bottom: 20px;
+  border-width: 1px;
 }
 button:hover{
   background-color: #aaffee;
