@@ -30,9 +30,25 @@ ipcMain.on('readCsvFiles', function(event, paths){
 });
 
 ipcMain.on('dump', function(event){
+<<<<<<< HEAD
   person.dump()
   .finaly(function(){
     refreshPersonData(0);
+=======
+  person.dump();
+});
+
+ipcMain.on('get_personList', function(event, offset){
+  person.list(offset)
+  .then(function(r){
+    console.log(r.persons[0].name);
+    w.webContents.send('set_personList', r);
+  })
+  .catch(function(r){
+    
+    console.log(r.persons.name);
+    w.webContents.send('set_personList', r);
+>>>>>>> fffbfbae2b7f078d0e4d1322993e00faf606644a
   });
 });
 
