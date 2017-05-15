@@ -12,7 +12,7 @@
     <div class="header">
       <p>CSV Manipulator</p>
       <button onclick="loadFiles()">Atualizar</button> total: {{count}} pessoas
-      <!--<button onclick="loadList(0)">Buscar</button>-->
+      <button onclick="dump()">Exportar</button>
     </div>
     <div class="container">
       <div class="listTitle">
@@ -111,6 +111,10 @@
 
     function openInBrowser(s) {
       console.log(s);
+    }
+
+    function dump(){
+      ipcRenderer.send('dump');
     }
   </script>
 </body>

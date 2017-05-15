@@ -29,6 +29,10 @@ ipcMain.on('readCsvFiles', function(event, paths){
   person.loadFiles();
 });
 
+ipcMain.on('dump', function(event){
+  person.dump();
+});
+
 ipcMain.on('get_personList', function(event, offset){
   person.list(offset)
   .then(function(r){
