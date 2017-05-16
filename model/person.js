@@ -72,7 +72,7 @@ function _dump(){
     });
     fs.writeFile(__dirname + '/../dump.csv', csvString, console.log);
   })
-  .catch(console);
+  .catch(console.log);
 }
 
 function readDirFiles(err, files){
