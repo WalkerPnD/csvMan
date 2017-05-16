@@ -3,6 +3,7 @@ Electron expample
 to Build
 ```terminal
 electron-packager ./ samp --platform=darwin --arch=x64 --version=1.6.7
+electron-packager . csvMan platform=win32 --arch=x64 --version=1.6.8
 ```
 
 

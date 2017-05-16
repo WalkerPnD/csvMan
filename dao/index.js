@@ -4,6 +4,7 @@ const
   Sequelize = require("sequelize"),
   sequelize = new Sequelize(
   'database', '', '', {
+    logging: false,
     dialect: 'sqlite',
     storage: __dirname + '/../datas.sqlite3'
   });

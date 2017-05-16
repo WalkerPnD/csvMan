@@ -22,7 +22,7 @@ function person(){
 }
 
 function _loadFiles(){
-  dao.sequelize.sync({force: true})
+  return dao.sequelize.sync({force: true})
   .then(function(e){
     fs.readdir(path, readDirFiles);
   })
@@ -35,6 +35,7 @@ function _list(page){
   let
     limit = paging + 1,
     list = {
+      records  : 0,
       persons: [],
       hasPrev: false,
       hasNext: false,
@@ -42,10 +43,12 @@ function _list(page){
     };
   
   return new Promise( function(resolve, reject){
-    personDao.findAll({offset, limit})
+    personDao.findAndCountAll({offset, limit})
     .then(function(datas){
+      list.records = datas.count;
+      datas = datas.rows;
       list.hasNext = (datas.length > paging);
-      datas = datas.map( (r) => ( r.get({plain:true}) ) )
+      datas = datas.map( (r) => ( r.get({plain:true}) ) );
       if (datas.length > paging) datas.pop();
       list.persons = datas;
       list.hasPrev = (offset != 0);
@@ -62,17 +65,20 @@ function _dump(){
   let
     csvString = 'Nome,URL,Empresa,Cargo,Tempo,Local\n',
     p = [];
-  
-  return personDao.findAll()
-  .then(function(datas){
-    datas = datas.map( r => ( r.get({plain:true}) ) );
-    datas.forEach( function(r){
-      Array.from(r).map( s => s.replace(/"/g, '""'));
-      csvString += `"${r.name}","${r.link}","${r.company}","${r.role}","${r.career}","${r.location}"\n`;
-    });
-    fs.writeFile(__dirname + '/../dump.csv', csvString, console.log);
-  })
-  .catch(console.log);
+
+  return new Promise(function(resolve, reject){
+    personDao.findAll()
+    .then(function(datas){
+      datas = datas.map( r => ( r.get({plain:true}) ) );
+      datas.forEach( function(r){
+        Array.from(r).map( s => s.replace(/"/g, '""'));
+        csvString += `"${r.name}","${r.link}","${r.company}","${r.role}","${r.career}","${r.location}"\n`;
+      });
+      fs.writeFile(__dirname + '/../dump.csv', csvString, console.log);
+    })
+    .then(resolve)
+    .catch(console.log);
+  });
 }
 
 function readDirFiles(err, files){

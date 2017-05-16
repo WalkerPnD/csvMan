@@ -9,8 +9,10 @@
   <div id="personList">
     <div class="header">
       <p>CSV Manipulator</p>
-      <button onclick="loadFiles()">Atualizar</button> total: {{count}} pessoas
+      total: {{count}} / {{records}} pessoas
       <button onclick="dump()">Exportar</button>
+      <button onclick="loadList(0)">Recarregar</button>
+      <button onclick="loadFiles()">Atualizar Dados</button>
     </div>
     <div class="container">
       <div class="listTitle">
@@ -57,6 +59,7 @@
       personList = new Vue({
         el: '#personList',
         data: {
+          records:0,
           count: 0,
           qName: '',
           qRole: '',
@@ -105,6 +108,7 @@
       personList.hasNext = list.hasNext;
       personList.hasPrev = list.hasPrev;
       personList.count   = list.persons.length;
+      personList.records = list.records;
     });
 
     function loadList(offset) {
