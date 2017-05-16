@@ -63,11 +63,7 @@ function _dump(){
     csvString = 'Nome,URL,Empresa,Cargo,Tempo,Local\n',
     p = [];
   
-<<<<<<< HEAD
   return personDao.findAll()
-=======
-  personDao.findAll()
->>>>>>> fffbfbae2b7f078d0e4d1322993e00faf606644a
   .then(function(datas){
     datas = datas.map( r => ( r.get({plain:true}) ) );
     datas.forEach( function(r){
