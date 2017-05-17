@@ -50,7 +50,7 @@ function create(){
 
   w = new BrowserWindow({width: 800, height: 600});
   w.loadURL(view('main'));
-  //w.webContents.openDevTools();
+  w.webContents.openDevTools();
   w.on('closed', function() {
     w = null;
   });
