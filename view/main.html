@@ -11,38 +11,31 @@
     <header class="toolbar toolbar-header">
     <div class="toolbar-actions">
         <div class="btn-group">
-          <button class="btn btn-default">
-            <span class="icon icon-home"></span>
+          <button class="btn btn-default" onclick="loadList(0)">
+            <span class="icon icon-arrows-ccw icon-text"></span>
+            Recarregar
           </button>
-          <button class="btn btn-default">
-            <span class="icon icon-folder"></span>
-          </button>
-          <button class="btn btn-default active">
-            <span class="icon icon-cloud"></span>
-          </button>
-          <button class="btn btn-default">
-            <span class="icon icon-popup"></span>
-          </button>
-          <button class="btn btn-default">
-            <span class="icon icon-shuffle"></span>
+          <button class="btn btn-default" onclick="loadFiles()">
+            <span class="icon icon-login icon-text"></span>
+            Importar
           </button>
         </div>
 
-        <button class="btn btn-default">
+        <!--<button class="btn btn-default">
           <span class="icon icon-home icon-text"></span>
           Filters
-        </button>
+        </button>-->
 
-        <button class="btn btn-default btn-dropdown pull-right">
+        <!--<button class="btn btn-default btn-dropdown pull-right">
           <span class="icon icon-megaphone"></span>
-        </button>
+        </button>-->
       </div>
     </header>
     <div class="window-content">
 
     <!--<div class="header">
       <p>CSV Manipulator</p>
-      total: {{count}} / {{records}} pessoas
+      total:  pessoas
       <button onclick="dump()">Exportar</button>
       <button onclick="loadList(0)">Recarregar</button>
       <button onclick="loadFiles()">Atualizar Dados</button>
@@ -101,13 +94,8 @@
     </div>
     <footer class="toolbar toolbar-footer">
       <div class="toolbar-actions">
-        <button class="btn btn-default">
-          Cancel
-        </button>
-
-        <button class="btn btn-primary pull-right">
-          Save
-        </button>
+        <span> {{records}} Cadastrados </span>
+        <button class="btn btn-primary pull-right" onclick="dump()">Exportar</button>
       </div>
     </footer>
   </div>
@@ -180,6 +168,7 @@
     }
 
     function loadFiles() {
+      console.log('hello');
       ipcRenderer.send('readCsvFiles', path);
       offset = 0;
     }

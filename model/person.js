@@ -13,7 +13,7 @@ let
 
 person.prototype.loadFiles = _loadFiles;
 person.prototype.list = _list;
-person.prototype.dump= _dump;
+person.prototype.dump = _dump;
 
 module.exports = new person();
 
@@ -72,7 +72,7 @@ function _dump(){
       datas = datas.map( r => ( r.get({plain:true}) ) );
       datas.forEach( function(r){
         Array.from(r).map( s => s.replace(/"/g, '""'));
-        csvString += `"${r.name}","${r.link}","${r.company}","${r.role}","${r.career}","${r.location}"\n`;
+        csvString += `"${r.name}","${r.url}","${r.company}","${r.role}","${r.time}","${r.local}"\n`;
       });
       fs.writeFile(__dirname + '/../dump.csv', csvString, console.log);
     })
